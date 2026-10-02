@@ -1,0 +1,2428 @@
+ <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <title>TAIWAN 🇹🇼 × JAPAN 🇯🇵 CULTURAL EXCHANGE: FOOD 🍣</title>
+  <style>
+    /* ==========================================================================
+       RESET & BASE STYLES
+       ========================================================================== */
+    * {
+      box-sizing: border-box;
+      user-select: none;
+      -webkit-user-select: none;
+      margin: 0;
+      padding: 0;
+      -webkit-tap-highlight-color: transparent;
+    }
+
+    body, html {
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      font-family: "Comic Sans MS", "Comic Neue", "Chalkboard SE", "Yu Gothic", "Microsoft JhengHei", sans-serif;
+      background: #FFF9F0;
+      color: #3E2723;
+    }
+
+    /* Outer Wrapper & Responsive Container */
+    #app-viewport {
+      width: 100vw;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      position: relative;
+      background: linear-gradient(135deg, #FFF9F0 0%, #FFEEDD 100%);
+    }
+
+    /* Cafe Hanging Lights Decor */
+    .hanging-lights {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 24px;
+      background-image: radial-gradient(circle, #FFB74D 6px, transparent 7px);
+      background-size: 40px 24px;
+      background-repeat: repeat-x;
+      opacity: 0.8;
+      z-index: 5;
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       TOP NAVIGATION & SCOREBOARD
+       ========================================================================== */
+    #top-nav {
+      height: 64px;
+      padding: 0 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: rgba(255, 255, 255, 0.85);
+      backdrop-filter: blur(10px);
+      border-bottom: 2px solid #FFE0B2;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.03);
+      z-index: 10;
+    }
+
+    .nav-score-group {
+      display: flex;
+      gap: 16px;
+      align-items: center;
+    }
+
+    .score-badge {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 6px 16px;
+      background: #FFF;
+      border-radius: 30px;
+      font-size: 1.1rem;
+      font-weight: bold;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      border: 2px solid #E0E0E0;
+    }
+
+    .score-badge.taiwan { border-color: #FF8A80; color: #C62828; }
+    .score-badge.japan { border-color: #90CAF9; color: #1565C0; }
+
+    .q-progress-badge {
+      font-size: 1.2rem;
+      font-weight: 900;
+      color: #6D4C41;
+      background: #FFE0B2;
+      padding: 6px 18px;
+      border-radius: 20px;
+    }
+
+    .nav-actions {
+      display: flex;
+      gap: 12px;
+    }
+
+    .icon-btn {
+      background: #FFF;
+      border: 2px solid #FFCC80;
+      border-radius: 50%;
+      width: 44px;
+      height: 44px;
+      font-size: 1.2rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      transition: transform 0.1s;
+    }
+
+    .icon-btn:active { transform: scale(0.92); }
+
+    /* ==========================================================================
+       DYNAMIC VIEWPORT CONTAINER
+       ========================================================================== */
+    #main-content {
+      flex: 1;
+      position: relative;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 16px 24px;
+      overflow: hidden;
+    }
+
+    /* ==========================================================================
+       START SCREEN
+       ========================================================================== */
+    .screen {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 24px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease-in-out;
+    }
+
+    .screen.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #start-screen {
+      text-align: center;
+      background: radial-gradient(circle, #FFF9F0 0%, #FFE8D6 100%);
+    }
+
+    .title-flags {
+      font-size: 4rem;
+      margin-bottom: 8px;
+      animation: floatSlow 3s ease-in-out infinite alternate;
+    }
+
+    .main-title {
+      font-size: 3rem;
+      font-weight: 900;
+      color: #4E342E;
+      text-shadow: 2px 2px 0 #FFF;
+      margin-bottom: 4px;
+    }
+
+    .subtitle {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #FF7043;
+      margin-bottom: 12px;
+    }
+
+    .slogan-badge {
+      background: #FFF;
+      padding: 8px 24px;
+      border-radius: 30px;
+      font-size: 1.2rem;
+      font-weight: 800;
+      color: #5D4037;
+      border: 2px dashed #FFB74D;
+      margin-bottom: 24px;
+    }
+
+    .start-btn {
+      background: linear-gradient(135deg, #FF7043 0%, #F4511E 100%);
+      color: #FFF;
+      border: none;
+      padding: 16px 48px;
+      border-radius: 50px;
+      font-size: 1.8rem;
+      font-weight: 900;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 8px 24px rgba(244, 81, 30, 0.4);
+      transition: transform 0.15s, box-shadow 0.15s;
+    }
+
+    .start-btn:active {
+      transform: scale(0.96);
+      box-shadow: 0 4px 12px rgba(244, 81, 30, 0.3);
+    }
+
+    /* ==========================================================================
+       FULL-SCREEN COUNTRY TURN OVERLAY
+       ========================================================================== */
+    #turn-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      z-index: 100;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.4s ease-in-out;
+    }
+
+    #turn-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    #turn-overlay.taiwan-bg {
+      background: radial-gradient(circle, #FFF0ED 0%, #FFCDD2 100%);
+    }
+
+    #turn-overlay.japan-bg {
+      background: radial-gradient(circle, #F0F4FE 0%, #BBDEFB 100%);
+    }
+
+    .turn-flag {
+      font-size: 7rem;
+      line-height: 1;
+      margin-bottom: 12px;
+      animation: flagPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    .turn-country-name {
+      font-size: 4.2rem;
+      font-weight: 900;
+      text-shadow: 4px 4px 0 #FFF;
+      margin-bottom: 12px;
+    }
+
+    .taiwan-bg .turn-country-name { color: #C62828; }
+    .japan-bg .turn-country-name { color: #1565C0; }
+
+    .turn-food-decor {
+      font-size: 3rem;
+      margin-bottom: 20px;
+      display: flex;
+      gap: 16px;
+      animation: bounceHorizontal 2s ease-in-out infinite alternate;
+    }
+
+    .turn-subtitle {
+      background: rgba(255,255,255,0.9);
+      padding: 10px 32px;
+      border-radius: 40px;
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #3E2723;
+      box-shadow: 0 6px 20px rgba(0,0,0,0.08);
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    /* ==========================================================================
+       QUESTION & PROMPT SECTION
+       ========================================================================== */
+    #game-screen {
+      justify-content: space-between;
+      padding: 12px 24px;
+    }
+
+    .question-card-container {
+      width: 100%;
+      max-width: 900px;
+      background: #FFF;
+      border-radius: 20px;
+      padding: 12px 20px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.05);
+      border: 2px solid #FFE0B2;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Five-Line Language Support Format */
+    .lang-block {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 2px;
+      width: 100%;
+    }
+
+    .lang-en {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #3E2723;
+      line-height: 1.2;
+    }
+
+    .lang-ja {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #1565C0;
+    }
+
+    .lang-zh {
+      font-size: 1.1rem;
+      font-weight: 700;
+      color: #C62828;
+    }
+
+    .lang-pinyin {
+      font-size: 0.95rem;
+      color: #8D6E63;
+      font-weight: 600;
+    }
+
+    .lang-romaji {
+      font-size: 0.95rem;
+      color: #5C6BC0;
+      font-weight: 600;
+    }
+
+    .audio-inline-btn {
+      background: #FFF3E0;
+      border: 2px solid #FFB74D;
+      color: #E65100;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      font-size: 1.1rem;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      margin-left: 8px;
+      vertical-align: middle;
+      transition: transform 0.1s;
+    }
+
+    .audio-inline-btn:active { transform: scale(0.9); }
+
+    .action-instruction-banner {
+      margin-top: 6px;
+      background: #E8F5E9;
+      color: #2E7D32;
+      padding: 4px 16px;
+      border-radius: 20px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      border: 1px solid #A5D6A7;
+    }
+
+    /* ==========================================================================
+       STABLE FOOD CHOICE GRID (NO SLIDING / CONVEYOR)
+       ========================================================================== */
+    .food-grid-container {
+      width: 100%;
+      max-width: 960px;
+      margin: 10px 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 220px;
+    }
+
+    .food-grid {
+      display: flex;
+      justify-content: center;
+      gap: 14px;
+      width: 100%;
+      flex-wrap: nowrap;
+    }
+
+    .food-card {
+      flex: 1;
+      max-width: 175px;
+      height: 215px;
+      background: #FFF;
+      border: 3px solid #FFF;
+      border-radius: 20px;
+      padding: 8px 6px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      box-shadow: 0 8px 20px rgba(0,0,0,0.06);
+      position: relative;
+      transition: transform 0.25s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.25s ease, opacity 0.3s ease;
+      /* Entry Animation */
+      opacity: 0;
+      transform: scale(0.7);
+    }
+
+    .food-card.popped {
+      opacity: 1;
+      animation: cardPopIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    .food-emoji {
+      font-size: 3.5rem;
+      line-height: 1;
+      margin: 4px 0;
+      filter: drop-shadow(0 4px 6px rgba(0,0,0,0.08));
+    }
+
+    .food-card .lang-en { font-size: 1.15rem; }
+    .food-card .lang-ja { font-size: 0.8rem; }
+    .food-card .lang-zh { font-size: 0.8rem; }
+    .food-card .lang-pinyin { font-size: 0.7rem; }
+    .food-card .lang-romaji { font-size: 0.7rem; }
+
+    /* Selected & Dimmed Card States */
+    .food-card.selected {
+      transform: scale(1.1) !important;
+      border-color: #FFB74D;
+      box-shadow: 0 0 25px rgba(255, 183, 77, 0.6), 0 10px 25px rgba(0,0,0,0.12);
+      z-index: 5;
+      background: #FFFDF0;
+    }
+
+    .food-card.dimmed {
+      opacity: 0.45 !important;
+      transform: scale(0.92) !important;
+      pointer-events: none;
+    }
+
+    /* ==========================================================================
+       STAGE PANELS: WHY STAGE & SAY SENTENCE STAGE
+       ========================================================================== */
+    .stage-panel {
+      width: 100%;
+      max-width: 900px;
+      background: #FFF;
+      border-radius: 20px;
+      padding: 12px 20px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      border: 2px solid #FFB74D;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .why-choices-grid {
+      display: flex;
+      gap: 12px;
+      width: 100%;
+      justify-content: center;
+    }
+
+    .why-card {
+      flex: 1;
+      max-width: 260px;
+      background: #FFF9F0;
+      border: 2px solid #FFE0B2;
+      border-radius: 16px;
+      padding: 10px 8px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.04);
+      transition: transform 0.2s, background-color 0.2s, border-color 0.2s;
+    }
+
+    .why-card:active { transform: scale(0.95); }
+
+    .why-card.selected {
+      background: #E8F5E9;
+      border-color: #66BB6A;
+      transform: scale(1.05);
+    }
+
+    .why-card .lang-en { font-size: 1.3rem; color: #2E7D32; }
+
+    /* Target Spoken Sentence Container */
+    .spoken-target-box {
+      background: #FFF3E0;
+      border: 2px dashed #FF9800;
+      border-radius: 16px;
+      padding: 10px 20px;
+      width: 100%;
+      text-align: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+    }
+
+    .spoken-sentence-text {
+      font-size: 1.8rem;
+      font-weight: 900;
+      color: #E65100;
+    }
+
+    .finish-saying-btn {
+      background: linear-gradient(135deg, #4CAF50 0%, #388E3C 100%);
+      color: #FFF;
+      border: none;
+      padding: 10px 32px;
+      border-radius: 30px;
+      font-size: 1.3rem;
+      font-weight: 900;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(56, 142, 60, 0.3);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      transition: transform 0.1s;
+    }
+
+    .finish-saying-btn:active { transform: scale(0.95); }
+
+    /* ==========================================================================
+       GEMS REVEAL OVERLAY / STAGE
+       ========================================================================== */
+    .gems-reveal-card {
+      background: linear-gradient(135deg, #FFF8E1 0%, #FFECB3 100%);
+      border: 3px solid #FFC107;
+      border-radius: 20px;
+      padding: 16px 28px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      box-shadow: 0 10px 30px rgba(255, 193, 7, 0.3);
+      animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+    }
+
+    .gems-amount {
+      font-size: 2.5rem;
+      font-weight: 900;
+      color: #FF8F00;
+    }
+
+    .next-turn-btn {
+      background: linear-gradient(135deg, #29B6F6 0%, #0288D1 100%);
+      color: #FFF;
+      border: none;
+      padding: 10px 32px;
+      border-radius: 30px;
+      font-size: 1.3rem;
+      font-weight: 900;
+      font-family: inherit;
+      cursor: pointer;
+      box-shadow: 0 6px 16px rgba(2, 136, 209, 0.3);
+      transition: transform 0.1s;
+    }
+
+    .next-turn-btn:active { transform: scale(0.95); }
+
+    /* ==========================================================================
+       FINAL CELEBRATION SCREEN
+       ========================================================================== */
+    #final-screen {
+      background: radial-gradient(circle, #FFF9F0 0%, #FFE8E8 100%);
+      text-align: center;
+    }
+
+    .final-title {
+      font-size: 2.8rem;
+      font-weight: 900;
+      color: #D32F2F;
+      margin-bottom: 12px;
+    }
+
+    .final-scores-container {
+      display: flex;
+      gap: 20px;
+      margin: 16px 0;
+    }
+
+    .final-score-box {
+      background: #FFF;
+      border-radius: 20px;
+      padding: 16px 24px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.06);
+      min-width: 180px;
+    }
+
+    .combined-gems-box {
+      background: linear-gradient(135deg, #FFD54F 0%, #FFB300 100%);
+      color: #FFF;
+      padding: 16px 36px;
+      border-radius: 30px;
+      font-size: 2rem;
+      font-weight: 900;
+      box-shadow: 0 8px 24px rgba(255, 179, 0, 0.4);
+      margin-bottom: 16px;
+      text-shadow: 1px 1px 0 rgba(0,0,0,0.2);
+    }
+
+    .final-message-badge {
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: #4E342E;
+      margin-bottom: 20px;
+    }
+
+    .screenshot-reminder {
+      background: #E1F5FE;
+      color: #0277BD;
+      padding: 8px 20px;
+      border-radius: 20px;
+      font-size: 1.1rem;
+      font-weight: 800;
+      margin-bottom: 24px;
+      border: 1px dashed #29B6F6;
+    }
+
+    /* ==========================================================================
+       MODALS: HELP & TEACHER SETTINGS
+       ========================================================================== */
+    .modal-overlay {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.4);
+      backdrop-filter: blur(4px);
+      z-index: 200;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.25s ease;
+    }
+
+    .modal-overlay.active {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .modal-card {
+      background: #FFF;
+      border-radius: 24px;
+      width: 90%;
+      max-width: 560px;
+      padding: 24px;
+      box-shadow: 0 12px 36px rgba(0,0,0,0.15);
+      border: 3px solid #FFB74D;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 2px solid #FFE0B2;
+      padding-bottom: 8px;
+    }
+
+    .modal-title {
+      font-size: 1.6rem;
+      font-weight: 900;
+      color: #4E342E;
+    }
+
+    .close-modal-btn {
+      background: #FFEBEE;
+      color: #C62828;
+      border: none;
+      border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      font-size: 1.2rem;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .help-phrase-item {
+      background: #FFF9F0;
+      border: 1px solid #FFE0B2;
+      border-radius: 12px;
+      padding: 10px 14px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .settings-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid #F5F5F5;
+      font-size: 1.1rem;
+      font-weight: bold;
+    }
+
+    .toggle-switch {
+      position: relative;
+      display: inline-block;
+      width: 52px;
+      height: 28px;
+    }
+
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+
+    .slider {
+      position: absolute;
+      cursor: pointer;
+      top: 0; left: 0; right: 0; bottom: 0;
+      background-color: #CCC;
+      transition: .3s;
+      border-radius: 34px;
+    }
+
+    .slider:before {
+      position: absolute;
+      content: "";
+      height: 20px; width: 20px;
+      left: 4px; bottom: 4px;
+      background-color: white;
+      transition: .3s;
+      border-radius: 50%;
+    }
+
+    input:checked + .slider { background-color: #66BB6A; }
+    input:checked + .slider:before { transform: translateX(24px); }
+
+    .select-input {
+      padding: 6px 12px;
+      border-radius: 12px;
+      border: 2px solid #FFB74D;
+      font-family: inherit;
+      font-weight: bold;
+      font-size: 1rem;
+    }
+
+    .danger-btn {
+      background: #FFEBEE;
+      color: #C62828;
+      border: 2px solid #EF9A9A;
+      padding: 8px 16px;
+      border-radius: 16px;
+      font-family: inherit;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    /* ==========================================================================
+       ANIMATIONS
+       ========================================================================== */
+    @keyframes cardPopIn {
+      0% { opacity: 0; transform: scale(0.7); }
+      70% { opacity: 1; transform: scale(1.08); }
+      100% { opacity: 1; transform: scale(1.0); }
+    }
+
+    @keyframes popIn {
+      0% { transform: scale(0.8); opacity: 0; }
+      100% { transform: scale(1); opacity: 1; }
+    }
+
+    @keyframes flagPop {
+      0% { transform: scale(0); }
+      70% { transform: scale(1.2); }
+      100% { transform: scale(1); }
+    }
+
+    @keyframes floatSlow {
+      0% { transform: translateY(0); }
+      100% { transform: translateY(-8px); }
+    }
+
+    @keyframes bounceHorizontal {
+      0% { transform: translateX(-6px); }
+      100% { transform: translateX(6px); }
+    }
+  </style>
+</head>
+<body>
+
+<div id="app-viewport">
+  <div class="hanging-lights"></div>
+
+  <!-- TOP NAVIGATION BAR -->
+  <header id="top-nav">
+    <div class="nav-score-group">
+      <div class="score-badge taiwan">
+        <span>🇹🇼</span>
+        <span id="tw-score-display">0</span>
+      </div>
+      <div class="score-badge japan">
+        <span>🇯🇵</span>
+        <span id="jp-score-display">0</span>
+      </div>
+    </div>
+
+    <div class="q-progress-badge" id="q-progress-text">
+      QUESTION 1 / 16
+    </div>
+
+    <div class="nav-actions">
+      <button class="icon-btn" onclick="openHelpModal()" title="Help">💡</button>
+      <button class="icon-btn" onclick="openSettingsModal()" title="Settings">⚙️</button>
+    </div>
+  </header>
+
+  <!-- MAIN CONTENT VIEWPORT -->
+  <main id="main-content">
+
+    <!-- START SCREEN -->
+    <div id="start-screen" class="screen active">
+      <div class="title-flags">🇹🇼 🍱 🇯🇵</div>
+      <h1 class="main-title">TAIWAN × JAPAN</h1>
+      <div class="subtitle">CULTURAL EXCHANGE: FOOD 🍣</div>
+      <div class="slogan-badge">ASK. SHARE. DISCOVER. CONNECT.</div>
+      <button class="start-btn" onclick="startGame()">START EXCHANGE ➔</button>
+    </div>
+
+    <!-- MAIN GAME SCREEN -->
+    <div id="game-screen" class="screen">
+      
+      <!-- QUESTION CARD -->
+      <div class="question-card-container">
+        <div id="question-lang-block" class="lang-block">
+          <!-- Injected dynamically -->
+        </div>
+        <div class="action-instruction-banner" id="stage-instruction-banner">
+          🗣️ ASK YOUR PARTNER!
+        </div>
+      </div>
+
+      <!-- STABLE FOOD GRID -->
+      <div class="food-grid-container">
+        <div class="food-grid" id="food-grid">
+          <!-- 5 Stable cards injected dynamically -->
+        </div>
+      </div>
+
+      <!-- INTERACTIVE STAGE PANEL (SAY / WHY / REASON / GEMS) -->
+      <div id="interactive-stage-panel" style="width:100%; max-width:900px; display:flex; justify-content:center;">
+        <!-- Dynamic stage content injected here -->
+      </div>
+
+    </div>
+
+    <!-- FINAL CELEBRATION SCREEN -->
+    <div id="final-screen" class="screen">
+      <h1 class="final-title">🎉 CULTURAL EXCHANGE COMPLETE! 🎉</h1>
+      
+      <div class="final-scores-container">
+        <div class="final-score-box">
+          <div style="font-size:2rem;">🇹🇼</div>
+          <div style="font-size:1.1rem; font-weight:bold;">Taiwan</div>
+          <div style="font-size:2rem; font-weight:900; color:#C62828;" id="final-tw-score">0</div>
+        </div>
+        <div class="final-score-box">
+          <div style="font-size:2rem;">🇯🇵</div>
+          <div style="font-size:1.1rem; font-weight:bold;">Japan</div>
+          <div style="font-size:2rem; font-weight:900; color:#1565C0;" id="final-jp-score">0</div>
+        </div>
+      </div>
+
+      <div class="combined-gems-box">
+        TOGETHER: <span id="final-total-score">0</span> CULTURE GEMS! ✨
+      </div>
+
+      <div class="final-message-badge">
+        YOU SHARED. YOU SPOKE. YOU LISTENED. YOU CONNECTED. 💕
+      </div>
+
+      <div class="screenshot-reminder">
+        📸 TAKE A SCREENSHOT! Show your teacher to get your exchange gift! 🎁
+      </div>
+
+      <div style="display:flex; gap:16px;">
+        <button class="start-btn" onclick="resetGameToStart()">PLAY AGAIN 🔄</button>
+      </div>
+    </div>
+
+  </main>
+
+  <!-- FULL-SCREEN COUNTRY TURN ANNOUNCEMENT OVERLAY -->
+  <div id="turn-overlay">
+    <div class="turn-flag" id="turn-flag-display">🇹🇼</div>
+    <div class="turn-country-name" id="turn-country-display">TAIWAN'S TURN!</div>
+    <div class="turn-food-decor" id="turn-food-decor">🍜 🧋 🥟 🍗 🥞</div>
+    <div class="turn-subtitle">
+      <span>GET READY TO SHARE! 🗣️</span>
+      <button class="audio-inline-btn" id="turn-audio-btn">🔊</button>
+    </div>
+  </div>
+
+  <!-- HELP MODAL -->
+  <div class="modal-overlay" id="help-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">💡 Communication Help</div>
+        <button class="close-modal-btn" onclick="closeHelpModal()">✕</button>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:10px;">
+        <div class="help-phrase-item">
+          <div>
+            <div class="lang-en">"What do you like?"</div>
+            <div class="lang-ja">何が好きですか？</div>
+            <div class="lang-zh">你喜歡什麼？</div>
+          </div>
+          <button class="audio-inline-btn" onclick="playEnglishSpeech('What do you like?')">🔊</button>
+        </div>
+
+        <div class="help-phrase-item">
+          <div>
+            <div class="lang-en">"Why?"</div>
+            <div class="lang-ja">なぜですか？</div>
+            <div class="lang-zh">為什麼？</div>
+          </div>
+          <button class="audio-inline-btn" onclick="playEnglishSpeech('Why?')">🔊</button>
+        </div>
+
+        <div class="help-phrase-item">
+          <div>
+            <div class="lang-en">"Can you say it again?"</div>
+            <div class="lang-ja">もう一度言ってもらえますか？</div>
+            <div class="lang-zh">你可以再說一次嗎？</div>
+          </div>
+          <button class="audio-inline-btn" onclick="playEnglishSpeech('Can you say it again?')">🔊</button>
+        </div>
+
+        <div class="help-phrase-item">
+          <div>
+            <div class="lang-en">"Please speak slowly."</div>
+            <div class="lang-ja">ゆっくり話してください。</div>
+            <div class="lang-zh">請說慢一點。</div>
+          </div>
+          <button class="audio-inline-btn" onclick="playEnglishSpeech('Please speak slowly.')">🔊</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- TEACHER SETTINGS MODAL -->
+  <div class="modal-overlay" id="settings-modal">
+    <div class="modal-card">
+      <div class="modal-header">
+        <div class="modal-title">⚙️ Teacher Settings</div>
+        <button class="close-modal-btn" onclick="closeSettingsModal()">✕</button>
+      </div>
+      <div style="display:flex; flex-direction:column; gap:12px;">
+        <div class="settings-row">
+          <span>English Voice Support</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="setting-voice-toggle" checked onchange="updateSettings()">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="settings-row">
+          <span>Game Sound Effects</span>
+          <label class="toggle-switch">
+            <input type="checkbox" id="setting-sfx-toggle" checked onchange="updateSettings()">
+            <span class="slider"></span>
+          </label>
+        </div>
+
+        <div class="settings-row">
+          <span>Speech Speed</span>
+          <select class="select-input" id="setting-speech-speed" onchange="updateSettings()">
+            <option value="0.85" selected>0.85 (Recommended)</option>
+            <option value="0.90">0.90</option>
+            <option value="0.95">0.95</option>
+            <option value="1.00">1.00 (Normal)</option>
+          </select>
+        </div>
+
+        <div style="margin-top:12px; display:flex; justify-content:space-between;">
+          <button class="danger-btn" onclick="confirmResetScores()">Reset Scores</button>
+          <button class="danger-btn" onclick="confirmRestartGame()">Restart Game</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  /* ==========================================================================
+     COMPLETE 16-QUESTION DATA STRUCTURE WITH MATCHING WHY REASONS
+     ========================================================================== */
+  const questionsData = [
+    // 🇹🇼 TAIWAN 1
+    {
+      country: 'taiwan',
+      qNum: 1,
+      qText: {
+        en: "What do you like for breakfast?",
+        ja: "朝ごはんは何が好きですか？",
+        zh: "你早餐喜歡吃什麼？",
+        pinyin: "nǐ zǎo cān xǐ huān chī shén me?",
+        romaji: "Asagohan wa nani ga suki desu ka?"
+      },
+      choices: [
+        {
+          emoji: "🍳",
+          en: "Egg", ja: "卵", zh: "蛋", pinyin: "dàn", romaji: "tamago",
+          reasons: [
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Healthy", ja: "体に良い", zh: "健康", pinyin: "jiàn kāng", romaji: "karada ni yoi" },
+            { en: "Soft", ja: "柔らかい", zh: "柔軟", pinyin: "róu ruǎn", romaji: "yarawakai" }
+          ]
+        },
+        {
+          emoji: "🍞",
+          en: "Toast", ja: "トースト", zh: "吐司", pinyin: "tǔ sī", romaji: "tōsuto",
+          reasons: [
+            { en: "Crispy", ja: "サクサクしている", zh: "香酥", pinyin: "xiāng sū", romaji: "sakusaku shiteiru" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" }
+          ]
+        },
+        {
+          emoji: "🥪",
+          en: "Sandwich", ja: "サンドイッチ", zh: "三明治", pinyin: "sān míng zhì", romaji: "sandoicchi",
+          reasons: [
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" },
+            { en: "Healthy", ja: "体に良い", zh: "健康", pinyin: "jiàn kāng", romaji: "karada ni yoi" }
+          ]
+        },
+        {
+          emoji: "🥞",
+          en: "Egg pancake", ja: "台湾風エッグパンケーキ", zh: "蛋餅", pinyin: "dàn bǐng", romaji: "taiwan-fū eggu pankēki",
+          reasons: [
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Chewy", ja: "モチモチしている", zh: "Q彈", pinyin: "Q dàn", romaji: "mochimochi shiteiru" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" }
+          ]
+        },
+        {
+          emoji: "🍙",
+          en: "Rice ball", ja: "おにぎり", zh: "飯糰", pinyin: "fàn tuán", romaji: "onigiri",
+          reasons: [
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Easy to eat", ja: "食べやすい", zh: "方便食用", pinyin: "fāng biàn shí yòng", romaji: "tabeyasui" }
+          ]
+        }
+      ]
+    },
+
+    // 🇯🇵 JAPAN 1
+    {
+      country: 'japan',
+      qNum: 2,
+      qText: {
+        en: "What do you like for breakfast?",
+        ja: "朝ごはんは何が好きですか？",
+        zh: "你早餐喜歡吃什麼？",
+        pinyin: "nǐ zǎo cān xǐ huān chī shén me?",
+        romaji: "Asagohan wa nani ga suki desu ka?"
+      },
+      choices: [
+        {
+          emoji: "🥣",
+          en: "Rice and miso soup", ja: "ご飯と味噌汁", zh: "白飯和味噌湯", pinyin: "bái fàn hé wèi zēng tāng", romaji: "gohan to misoshiru",
+          reasons: [
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Healthy", ja: "体に良い", zh: "健康", pinyin: "jiàn kāng", romaji: "karada ni yoi" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" }
+          ]
+        },
+        {
+          emoji: "🍞",
+          en: "Toast", ja: "トースト", zh: "吐司", pinyin: "tǔ sī", romaji: "tōsuto",
+          reasons: [
+            { en: "Crispy", ja: "サクサクしている", zh: "香酥", pinyin: "xiāng sū", romaji: "sakusaku shiteiru" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" }
+          ]
+        },
+        {
+          emoji: "🍙",
+          en: "Rice ball", ja: "おにぎり", zh: "飯糰", pinyin: "fàn tuán", romaji: "onigiri",
+          reasons: [
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Easy to eat", ja: "食べやすい", zh: "方便食用", pinyin: "fāng biàn shí yòng", romaji: "tabeyasui" }
+          ]
+        },
+        {
+          emoji: "🥣",
+          en: "Cereal", ja: "シリアル", zh: "麥片", pinyin: "mài piàn", romaji: "shiriaru",
+          reasons: [
+            { en: "Sweet", ja: "甘い", zh: "甜甜的", pinyin: "tián tián de", romaji: "amai" },
+            { en: "Crispy", ja: "サクサクしている", zh: "香脆", pinyin: "xiāng cuì", romaji: "sakusaku shiteiru" },
+            { en: "Healthy", ja: "体に良い", zh: "健康", pinyin: "jiàn kāng", romaji: "karada ni yoi" }
+          ]
+        },
+        {
+          emoji: "🍳",
+          en: "Egg", ja: "卵", zh: "蛋", pinyin: "dàn", romaji: "tamago",
+          reasons: [
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Healthy", ja: "体に良い", zh: "健康", pinyin: "jiàn kāng", romaji: "karada ni yoi" },
+            { en: "Soft", ja: "柔らかい", zh: "柔軟", pinyin: "róu ruǎn", romaji: "yarawakai" }
+          ]
+        }
+      ]
+    },
+
+    // 🇹🇼 TAIWAN 2
+    {
+      country: 'taiwan',
+      qNum: 3,
+      qText: {
+        en: "What do you like for lunch?",
+        ja: "昼ごはんは何が好きですか？",
+        zh: "你午餐喜歡吃什麼？",
+        pinyin: "nǐ wǔ cān xǐ huān chī shén me?",
+        romaji: "Hirugohan wa nani ga suki desu ka?"
+      },
+      choices: [
+        {
+          emoji: "🍛",
+          en: "Fried rice", ja: "チャーハン", zh: "炒飯", pinyin: "chǎo fàn", romaji: "chāhan",
+          reasons: [
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" }
+          ]
+        },
+        {
+          emoji: "🍜",
+          en: "Noodles", ja: "麺", zh: "麵", pinyin: "miàn", romaji: "men",
+          reasons: [
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Chewy", ja: "モチモチしている", zh: "Q彈", pinyin: "Q dàn", romaji: "mochimochi shiteiru" }
+          ]
+        },
+        {
+          emoji: "🍱",
+          en: "Fried chicken and rice", ja: "台湾風フライドチキンとご飯", zh: "雞排飯", pinyin: "jī pái fàn", romaji: "taiwan-fū furaido chikkin to gohan",
+          reasons: [
+            { en: "Crispy", ja: "サクサクしている", zh: "酥脆", pinyin: "sū cuì", romaji: "sakusaku shiteiru" },
+            { en: "Juicy", ja: "ジューシー", zh: "多汁", pinyin: "duō zhī", romaji: "jūshī" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" }
+          ]
+        },
+        {
+          emoji: "🥟",
+          en: "Dumplings", ja: "餃子", zh: "水餃", pinyin: "shuǐ jiǎo", romaji: "gyōza",
+          reasons: [
+            { en: "Juicy", ja: "ジューシー", zh: "多汁", pinyin: "duō zhī", romaji: "jūshī" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" }
+          ]
+        },
+        {
+          emoji: "🍛",
+          en: "Curry and rice", ja: "カレーライス", zh: "咖哩飯", pinyin: "gā lǐ fàn", romaji: "karē raisu",
+          reasons: [
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" }
+          ]
+        }
+      ]
+    },
+
+    // 🇯🇵 JAPAN 2
+    {
+      country: 'japan',
+      qNum: 4,
+      qText: {
+        en: "What do you like for lunch?",
+        ja: "昼ごはんは何が好きですか？",
+        zh: "你午餐喜歡吃什麼？",
+        pinyin: "nǐ wǔ cān xǐ huān chī shén me?",
+        romaji: "Hirugohan wa nani ga suki desu ka?"
+      },
+      choices: [
+        {
+          emoji: "🍜",
+          en: "Ramen", ja: "ラーメン", zh: "拉麵", pinyin: "lā miàn", romaji: "rāmen",
+          reasons: [
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" }
+          ]
+        },
+        {
+          emoji: "🍛",
+          en: "Curry and rice", ja: "カレーライス", zh: "咖哩飯", pinyin: "gā lǐ fàn", romaji: "karē raisu",
+          reasons: [
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" }
+          ]
+        },
+        {
+          emoji: "🍳",
+          en: "Fried rice", ja: "チャーハン", zh: "炒飯", pinyin: "chǎo fàn", romaji: "chāhan",
+          reasons: [
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" }
+          ]
+        },
+        {
+          emoji: "🥣",
+          en: "Rice bowl", ja: "丼", zh: "丼飯", pinyin: "dòng fàn", romaji: "donburi",
+          reasons: [
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" }
+          ]
+        },
+        {
+          emoji: "🍲",
+          en: "Udon", ja: "うどん", zh: "烏龍麵", pinyin: "wū lóng miàn", romaji: "udon",
+          reasons: [
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Soft", ja: "柔らかい", zh: "滑順", pinyin: "huá shùn", romaji: "yarawakai" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" }
+          ]
+        }
+      ]
+    },
+
+    // 🇹🇼 TAIWAN 3
+    {
+      country: 'taiwan',
+      qNum: 5,
+      qText: {
+        en: "What snack do you like?",
+        ja: "どんなお菓子が好きですか？",
+        zh: "你喜歡什麼點心？",
+        pinyin: "nǐ xǐ huān shén me diǎn xīn?",
+        romaji: "Donna okashi ga suki desu ka?"
+      },
+      choices: [
+        {
+          emoji: "🍪",
+          en: "Cookies", ja: "クッキー", zh: "餅乾", pinyin: "bǐng gān", romaji: "kukkī",
+          reasons: [
+            { en: "Sweet", ja: "甘い", zh: "甜甜的", pinyin: "tián tián de", romaji: "amai" },
+            { en: "Crispy", ja: "サクサクしている", zh: "酥脆", pinyin: "sū cuì", romaji: "sakusaku shiteiru" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" }
+          ]
+        },
+        {
+          emoji: "🍟",
+          en: "Potato chips", ja: "ポテトチップス", zh: "洋芋片", pinyin: "yáng yù piàn", romaji: "poteto chippusu",
+          reasons: [
+            { en: "Crispy", ja: "サクサクしている", zh: "香脆", pinyin: "xiāng cuì", romaji: "sakusaku shiteiru" },
+            { en: "Salty", ja: "しょっぱい", zh: "咸香", pinyin: "xián xiāng", romaji: "shoppai" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" }
+          ]
+        },
+        {
+          emoji: "🍫",
+          en: "Chocolate", ja: "チョコレート", zh: "巧克力", pinyin: "qiǎo kè lì", romaji: "chokorēto",
+          reasons: [
+            { en: "Sweet", ja: "甘い", zh: "香甜", pinyin: "xiāng tián", romaji: "amai" },
+            { en: "Creamy", ja: "クリーミー", zh: "濃郁", pinyin: "nóng yù", romaji: "kurīmī" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" }
+          ]
+        },
+        {
+          emoji: "🍎",
+          en: "Fruit", ja: "フルーツ", zh: "水果", pinyin: "shuǐ guǒ", romaji: "furūtsu",
+          reasons: [
+            { en: "Fresh", ja: "新鮮", zh: "新鮮", pinyin: "xīn xiān", romaji: "shinsen" },
+            { en: "Sweet", ja: "甘い", zh: "甜美", pinyin: "tián měi", romaji: "amai" },
+            { en: "Healthy", ja: "体に良い", zh: "健康", pinyin: "jiàn kāng", romaji: "karada ni yoi" }
+          ]
+        },
+        {
+          emoji: "🍦",
+          en: "Ice cream", ja: "アイスクリーム", zh: "冰淇淋", pinyin: "bīng qí lín", romaji: "aisukurīmu",
+          reasons: [
+            { en: "Cold", ja: "冷たい", zh: "冰涼", pinyin: "bīng liáng", romaji: "tsumetai" },
+            { en: "Sweet", ja: "甘い", zh: "香甜", pinyin: "xiāng tián", romaji: "amai" },
+            { en: "Creamy", ja: "クリーミー", zh: "綿密", pinyin: "mián mì", romaji: "kurīmī" }
+          ]
+        }
+      ]
+    },
+
+    // 🇯🇵 JAPAN 3
+    {
+      country: 'japan',
+      qNum: 6,
+      qText: {
+        en: "What snack do you like?",
+        ja: "どんなお菓子が好きですか？",
+        zh: "你喜歡什麼點心？",
+        pinyin: "nǐ xǐ huān shén me diǎn xīn?",
+        romaji: "Donna okashi ga suki desu ka?"
+      },
+      choices: [
+        {
+          emoji: "🍫",
+          en: "Chocolate", ja: "チョコレート", zh: "巧克力", pinyin: "qiǎo kè lì", romaji: "chokorēto",
+          reasons: [
+            { en: "Sweet", ja: "甘い", zh: "香甜", pinyin: "xiāng tián", romaji: "amai" },
+            { en: "Creamy", ja: "クリーミー", zh: "濃郁", pinyin: "nóng yù", romaji: "kurīmī" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" }
+          ]
+        },
+        {
+          emoji: "🍪",
+          en: "Cookies", ja: "クッキー", zh: "餅乾", pinyin: "bǐng gān", romaji: "kukkī",
+          reasons: [
+            { en: "Sweet", ja: "甘い", zh: "甜甜的", pinyin: "tián tián de", romaji: "amai" },
+            { en: "Crispy", ja: "サクサクしている", zh: "酥脆", pinyin: "sū cuì", romaji: "sakusaku shiteiru" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" }
+          ]
+        },
+        {
+          emoji: "🍟",
+          en: "Potato chips", ja: "ポテトチップス", zh: "洋芋片", pinyin: "yáng yù piàn", romaji: "poteto chippusu",
+          reasons: [
+            { en: "Crispy", ja: "サクサクしている", zh: "香脆", pinyin: "xiāng cuì", romaji: "sakusaku shiteiru" },
+            { en: "Salty", ja: "しょっぱい", zh: "咸香", pinyin: "xián xiāng", romaji: "shoppai" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" }
+          ]
+        },
+        {
+          emoji: "🍦",
+          en: "Ice cream", ja: "アイスクリーム", zh: "冰淇淋", pinyin: "bīng qí lín", romaji: "aisukurīmu",
+          reasons: [
+            { en: "Cold", ja: "冷たい", zh: "冰涼", pinyin: "bīng liáng", romaji: "tsumetai" },
+            { en: "Sweet", ja: "甘い", zh: "香甜", pinyin: "xiāng tián", romaji: "amai" },
+            { en: "Creamy", ja: "クリーミー", zh: "綿密", pinyin: "mián mì", romaji: "kurīmī" }
+          ]
+        },
+        {
+          emoji: "🥢",
+          en: "Pocky", ja: "ポッキー", zh: "百奇", pinyin: "bǎi qí", romaji: "Pokkī",
+          reasons: [
+            { en: "Crispy", ja: "サクサクしている", zh: "香脆", pinyin: "xiāng cuì", romaji: "sakusaku shiteiru" },
+            { en: "Sweet", ja: "甘い", zh: "甜美", pinyin: "tián měi", romaji: "amai" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" }
+          ]
+        }
+      ]
+    },
+
+    // 🇹🇼 TAIWAN 4
+    {
+      country: 'taiwan',
+      qNum: 7,
+      qText: {
+        en: "What do you like for dinner?",
+        ja: "晩ごはんは何が好きですか？",
+        zh: "你晚餐喜歡吃什麼？",
+        pinyin: "nǐ wǎn cān xǐ huān chī shén me?",
+        romaji: "Bangohan wa nani ga suki desu ka?"
+      },
+      choices: [
+        {
+          emoji: "🍗",
+          en: "Rice and chicken", ja: "台湾風チキンライス", zh: "雞肉飯", pinyin: "jī ròu fàn", romaji: "taiwan-fū chikkin raisu",
+          reasons: [
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" }
+          ]
+        },
+        {
+          emoji: "🍛",
+          en: "Fried rice", ja: "チャーハン", zh: "炒飯", pinyin: "chǎo fàn", romaji: "chāhan",
+          reasons: [
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" }
+          ]
+        },
+        {
+          emoji: "🍜",
+          en: "Noodles", ja: "麺", zh: "麵", pinyin: "miàn", romaji: "men",
+          reasons: [
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Chewy", ja: "モチモチしている", zh: "Q彈", pinyin: "Q dàn", romaji: "mochimochi shiteiru" }
+          ]
+        },
+        {
+          emoji: "🥟",
+          en: "Dumplings", ja: "餃子", zh: "水餃", pinyin: "shuǐ jiǎo", romaji: "gyōza",
+          reasons: [
+            { en: "Juicy", ja: "ジューシー", zh: "多汁", pinyin: "duō zhī", romaji: "jūshī" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" }
+          ]
+        },
+        {
+          emoji: "🍲",
+          en: "Hot pot", ja: "鍋", zh: "火鍋", pinyin: "huǒ guō", romaji: "nabe",
+          reasons: [
+            { en: "Warm", ja: "温かい", zh: "溫暖", pinyin: "wēn nuǎn", romaji: "atatakai" },
+            { en: "Delicious", ja: "美味しい", zh: "美味", pinyin: "měi wèi", romaji: "oishii" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "豐富飽足", pinyin: "fēng fù bǎo zú", romaji: "onaka ga fukureru" }
+          ]
+        }
+      ]
+    },
+
+    // 🇯🇵 JAPAN 4
+    {
+      country: 'japan',
+      qNum: 8,
+      qText: {
+        en: "What do you like for dinner?",
+        ja: "晩ごはんは何が好きですか？",
+        zh: "你晚餐喜歡吃什麼？",
+        pinyin: "nǐ wǎn cān xǐ huān chī shén me?",
+        romaji: "Bangohan wa nani ga suki desu ka?"
+      },
+      choices: [
+        {
+          emoji: "🍛",
+          en: "Curry and rice", ja: "カレーライス", zh: "咖哩飯", pinyin: "gā lǐ fàn", romaji: "karē raisu",
+          reasons: [
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" }
+          ]
+        },
+        {
+          emoji: "🍜",
+          en: "Ramen", ja: "ラーメン", zh: "拉麵", pinyin: "lā miàn", romaji: "rāmen",
+          reasons: [
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" }
+          ]
+        },
+        {
+          emoji: "🍣",
+          en: "Sushi", ja: "寿司", zh: "壽司", pinyin: "shòu sī", romaji: "sushi",
+          reasons: [
+            { en: "Fresh", ja: "新鮮", zh: "新鮮", pinyin: "xīn xiān", romaji: "shinsen" },
+            { en: "Delicious", ja: "美味しい", zh: "美味", pinyin: "měi wèi", romaji: "oishii" },
+            { en: "Healthy", ja: "体に良い", zh: "健康", pinyin: "jiàn kāng", romaji: "karada ni yoi" }
+          ]
+        },
+        {
+          emoji: "🍲",
+          en: "Udon", ja: "うどん", zh: "烏龍麵", pinyin: "wū lóng miàn", romaji: "udon",
+          reasons: [
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Soft", ja: "柔らかい", zh: "滑順", pinyin: "huá shùn", romaji: "yarawakai" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" }
+          ]
+        },
+        {
+          emoji: "🐟",
+          en: "Rice and grilled fish", ja: "ご飯と焼き魚", zh: "白飯和烤魚", pinyin: "bái fàn hé kǎo yú", romaji: "gohan to yakizakana",
+          reasons: [
+            { en: "Healthy", ja: "体に良い", zh: "健康", pinyin: "jiàn kāng", romaji: "karada ni yoi" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" }
+          ]
+        }
+      ]
+    },
+
+    // 🇹🇼 TAIWAN 5
+    {
+      country: 'taiwan',
+      qNum: 9,
+      qText: {
+        en: "What drink do you like?",
+        ja: "どんな飲み物が好きですか？",
+        zh: "你喜歡什麼飲料？",
+        pinyin: "nǐ xǐ huān shén me yǐn liào?",
+        romaji: "Donna nomimono ga suki desu ka?"
+      },
+      choices: [
+        {
+          emoji: "💧",
+          en: "Water", ja: "水", zh: "水", pinyin: "shuǐ", romaji: "mizu",
+          reasons: [
+            { en: "Healthy", ja: "体に良い", zh: "健康", pinyin: "jiàn kāng", romaji: "karada ni yoi" },
+            { en: "Refreshing", ja: "爽やか", zh: "清爽", pinyin: "qīng shuǎng", romaji: "sawayaka" },
+            { en: "Cold", ja: "冷たい", zh: "冰涼", pinyin: "bīng liáng", romaji: "tsumetai" }
+          ]
+        },
+        {
+          emoji: "🥛",
+          en: "Milk", ja: "牛乳", zh: "牛奶", pinyin: "niú nǎi", romaji: "gyūnyū",
+          reasons: [
+            { en: "Healthy", ja: "体に良い", zh: "健康", pinyin: "jiàn kāng", romaji: "karada ni yoi" },
+            { en: "Creamy", ja: "クリーミー", zh: "濃郁", pinyin: "nóng yù", romaji: "kurīmī" },
+            { en: "Delicious", ja: "美味しい", zh: "好喝", pinyin: "hǎo hē", romaji: "oishii" }
+          ]
+        },
+        {
+          emoji: "🍵",
+          en: "Tea", ja: "お茶", zh: "茶", pinyin: "chá", romaji: "ocha",
+          reasons: [
+            { en: "Refreshing", ja: "爽やか", zh: "解膩清爽", pinyin: "jiě nì qīng shuǎng", romaji: "sawayaka" },
+            { en: "Healthy", ja: "体に良い", zh: "健康", pinyin: "jiàn kāng", romaji: "karada ni yoi" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" }
+          ]
+        },
+        {
+          emoji: "🧃",
+          en: "Juice", ja: "ジュース", zh: "果汁", pinyin: "guǒ zhī", romaji: "jūsu",
+          reasons: [
+            { en: "Sweet", ja: "甘い", zh: "香甜", pinyin: "xiāng tián", romaji: "amai" },
+            { en: "Fresh", ja: "新鮮", zh: "新鮮", pinyin: "xīn xiān", romaji: "shinsen" },
+            { en: "Delicious", ja: "美味しい", zh: "好喝", pinyin: "hǎo hē", romaji: "oishii" }
+          ]
+        },
+        {
+          emoji: "🧋",
+          en: "Bubble tea", ja: "タピオカミルクティー", zh: "珍珠奶茶", pinyin: "zhēn zhū nǎi chá", romaji: "tapioka miruku tī",
+          reasons: [
+            { en: "Chewy", ja: "モチモチしている", zh: "Q彈", pinyin: "Q dàn", romaji: "mochimochi shiteiru" },
+            { en: "Sweet", ja: "甘い", zh: "香甜", pinyin: "xiāng tián", romaji: "amai" },
+            { en: "Delicious", ja: "美味しい", zh: "好喝", pinyin: "hǎo hē", romaji: "oishii" }
+          ]
+        }
+      ]
+    },
+
+    // 🇯🇵 JAPAN 5
+    {
+      country: 'japan',
+      qNum: 10,
+      qText: {
+        en: "What drink do you like?",
+        ja: "どんな飲み物が好きですか？",
+        zh: "你喜歡什麼飲料？",
+        pinyin: "nǐ xǐ huān shén me yǐn liào?",
+        romaji: "Donna nomimono ga suki desu ka?"
+      },
+      choices: [
+        {
+          emoji: "💧",
+          en: "Water", ja: "水", zh: "水", pinyin: "shuǐ", romaji: "mizu",
+          reasons: [
+            { en: "Healthy", ja: "体に良い", zh: "健康", pinyin: "jiàn kāng", romaji: "karada ni yoi" },
+            { en: "Refreshing", ja: "爽やか", zh: "清爽", pinyin: "qīng shuǎng", romaji: "sawayaka" },
+            { en: "Cold", ja: "冷たい", zh: "冰涼", pinyin: "bīng liáng", romaji: "tsumetai" }
+          ]
+        },
+        {
+          emoji: "🥛",
+          en: "Milk", ja: "牛乳", zh: "牛奶", pinyin: "niú nǎi", romaji: "gyūnyū",
+          reasons: [
+            { en: "Healthy", ja: "体に良い", zh: "健康", pinyin: "jiàn kāng", romaji: "karada ni yoi" },
+            { en: "Creamy", ja: "クリーミー", zh: "濃郁", pinyin: "nóng yù", romaji: "kurīmī" },
+            { en: "Delicious", ja: "美味しい", zh: "好喝", pinyin: "hǎo hē", romaji: "oishii" }
+          ]
+        },
+        {
+          emoji: "🍵",
+          en: "Tea", ja: "お茶", zh: "茶", pinyin: "chá", romaji: "ocha",
+          reasons: [
+            { en: "Refreshing", ja: "爽やか", zh: "清爽", pinyin: "qīng shuǎng", romaji: "sawayaka" },
+            { en: "Healthy", ja: "体に良い", zh: "健康", pinyin: "jiàn kāng", romaji: "karada ni yoi" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" }
+          ]
+        },
+        {
+          emoji: "🧃",
+          en: "Juice", ja: "ジュース", zh: "果汁", pinyin: "guǒ zhī", romaji: "jūsu",
+          reasons: [
+            { en: "Sweet", ja: "甘い", zh: "香甜", pinyin: "xiāng tián", romaji: "amai" },
+            { en: "Fresh", ja: "新鮮", zh: "新鮮", pinyin: "xīn xiān", romaji: "shinsen" },
+            { en: "Delicious", ja: "美味しい", zh: "好喝", pinyin: "hǎo hē", romaji: "oishii" }
+          ]
+        },
+        {
+          emoji: "🥤",
+          en: "Sports drink", ja: "スポーツドリンク", zh: "運動飲料", pinyin: "yùn dòng yǐn liào", romaji: "supōtsu dorinku",
+          reasons: [
+            { en: "Refreshing", ja: "爽やか", zh: "解渴清爽", pinyin: "jiě kě qīng shuǎng", romaji: "sawayaka" },
+            { en: "Cold", ja: "冷たい", zh: "冰涼", pinyin: "bīng liáng", romaji: "tsumetai" },
+            { en: "Delicious", ja: "美味しい", zh: "好喝", pinyin: "hǎo hē", romaji: "oishii" }
+          ]
+        }
+      ]
+    },
+
+    // 🇹🇼 TAIWAN 6
+    {
+      country: 'taiwan',
+      qNum: 11,
+      qText: {
+        en: "What street food do you like?",
+        ja: "どんな屋台料理が好きですか？",
+        zh: "你喜歡什麼夜市小吃？",
+        pinyin: "nǐ xǐ huān shén me yè shì xiǎo chī?",
+        romaji: "Donna yatai ryōri ga suki desu ka?"
+      },
+      choices: [
+        {
+          emoji: "🍗",
+          en: "Fried chicken", ja: "台湾風フライドチキン", zh: "鹽酥雞", pinyin: "yán sū jī", romaji: "taiwan-fū furaido chikkin",
+          reasons: [
+            { en: "Crispy", ja: "サクサクしている", zh: "酥脆", pinyin: "sū cuì", romaji: "sakusaku shiteiru" },
+            { en: "Juicy", ja: "ジューシー", zh: "多汁", pinyin: "duō zhī", romaji: "jūshī" },
+            { en: "Salty", ja: "しょっぱい", zh: "鹹香", pinyin: "xián xiāng", romaji: "shoppai" }
+          ]
+        },
+        {
+          emoji: "🌭",
+          en: "Sausage", ja: "ソーセージ", zh: "香腸", pinyin: "xiāng cháng", romaji: "sōsēji",
+          reasons: [
+            { en: "Juicy", ja: "ジューシー", zh: "多汁", pinyin: "duō zhī", romaji: "jūshī" },
+            { en: "Delicious", ja: "美味しい", zh: "美味", pinyin: "měi wèi", romaji: "oishii" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" }
+          ]
+        },
+        {
+          emoji: "🥞",
+          en: "Scallion pancake", ja: "台湾風ねぎパンケーキ", zh: "蔥抓餅", pinyin: "cōng zhuā bǐng", romaji: "taiwan-fū negi pankēki",
+          reasons: [
+            { en: "Crispy", ja: "サクサクしている", zh: "酥脆", pinyin: "sū cuì", romaji: "sakusaku shiteiru" },
+            { en: "Chewy", ja: "モチモチしている", zh: "Q彈", pinyin: "Q dàn", romaji: "mochimochi shiteiru" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" }
+          ]
+        },
+        {
+          emoji: "🥩",
+          en: "Fried chicken cutlet", ja: "台湾風フライドチキンカツ", zh: "雞排", pinyin: "jī pái", romaji: "taiwan-fū furaido chikkin katsu",
+          reasons: [
+            { en: "Crispy", ja: "サクサクしている", zh: "超酥脆", pinyin: "chāo sū cuì", romaji: "sakusaku shiteiru" },
+            { en: "Juicy", ja: "ジューシー", zh: "多汁", pinyin: "duō zhī", romaji: "jūshī" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "大份量飽足", pinyin: "dà fèn liàng bǎo zú", romaji: "onaka ga fukureru" }
+          ]
+        },
+        {
+          emoji: "🌽",
+          en: "Grilled corn", ja: "焼きとうもろこし", zh: "烤玉米", pinyin: "kǎo yù mǐ", romaji: "yaki tōmorokoshi",
+          reasons: [
+            { en: "Sweet", ja: "甘い", zh: "香甜", pinyin: "xiāng tián", romaji: "amai" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Delicious", ja: "美味しい", zh: "美味", pinyin: "měi wèi", romaji: "oishii" }
+          ]
+        }
+      ]
+    },
+
+    // 🇯🇵 JAPAN 6
+    {
+      country: 'japan',
+      qNum: 12,
+      qText: {
+        en: "What street food do you like?",
+        ja: "どんな屋台料理が好きですか？",
+        zh: "你喜歡什麼夜市小吃？",
+        pinyin: "nǐ xǐ huān shén me yè shì xiǎo chī?",
+        romaji: "Donna yatai ryōri ga suki desu ka?"
+      },
+      choices: [
+        {
+          emoji: "🐙",
+          en: "Takoyaki", ja: "たこ焼き", zh: "章魚燒", pinyin: "zhāng yú shāo", romaji: "takoyaki",
+          reasons: [
+            { en: "Hot", ja: "熱い", zh: "燙口熱騰騰", pinyin: "tàng kǒu rè téng téng", romaji: "atsui" },
+            { en: "Soft", ja: "柔らかい", zh: "鬆軟", pinyin: "sōng ruǎn", romaji: "yarawakai" },
+            { en: "Delicious", ja: "美味しい", zh: "美味", pinyin: "měi wèi", romaji: "oishii" }
+          ]
+        },
+        {
+          emoji: "🥢",
+          en: "Yakisoba", ja: "焼きそば", zh: "炒麵", pinyin: "chǎo miàn", romaji: "yakisoba",
+          reasons: [
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" }
+          ]
+        },
+        {
+          emoji: "🐟",
+          en: "Taiyaki", ja: "たい焼き", zh: "鯛魚燒", pinyin: "diāo yú shāo", romaji: "taiyaki",
+          reasons: [
+            { en: "Sweet", ja: "甘い", zh: "香甜", pinyin: "xiāng tián", romaji: "amai" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Crispy", ja: "サクサクしている", zh: "外酥內軟", pinyin: "wài sū nèi ruǎn", romaji: "sakusaku shiteiru" }
+          ]
+        },
+        {
+          emoji: "🍢",
+          en: "Yakitori", ja: "焼き鳥", zh: "烤雞肉串", pinyin: "kǎo jī ròu chuàn", romaji: "yakitori",
+          reasons: [
+            { en: "Juicy", ja: "ジューシー", zh: "多汁", pinyin: "duō zhī", romaji: "jūshī" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Delicious", ja: "美味しい", zh: "美味", pinyin: "měi wèi", romaji: "oishii" }
+          ]
+        },
+        {
+          emoji: "🍟",
+          en: "French fries", ja: "フライドポテト", zh: "薯條", pinyin: "shǔ tiáo", romaji: "furaido poteto",
+          reasons: [
+            { en: "Crispy", ja: "サクサクしている", zh: "香脆", pinyin: "xiāng cuì", romaji: "sakusaku shiteiru" },
+            { en: "Salty", ja: "しょっぱい", zh: "鹹香", pinyin: "xián xiāng", romaji: "shoppai" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" }
+          ]
+        }
+      ]
+    },
+
+    // 🇹🇼 TAIWAN 7
+    {
+      country: 'taiwan',
+      qNum: 13,
+      qText: {
+        en: "What's your favorite winter food?",
+        ja: "冬に一番好きな食べ物は何ですか？",
+        zh: "你冬天最喜歡吃什麼食物？",
+        pinyin: "nǐ dōng tiān zuì xǐ huān chī shén me shí wù?",
+        romaji: "Fuyu ni ichiban suki na tabemono wa nani desu ka?"
+      },
+      choices: [
+        {
+          emoji: "🍲",
+          en: "Hot pot", ja: "鍋", zh: "火鍋", pinyin: "huǒ guō", romaji: "nabe",
+          reasons: [
+            { en: "Warm", ja: "温かい", zh: "溫暖", pinyin: "wēn nuǎn", romaji: "atatakai" },
+            { en: "Delicious", ja: "美味しい", zh: "美味", pinyin: "měi wèi", romaji: "oishii" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "豐富飽足", pinyin: "fēng fù bǎo zú", romaji: "onaka ga fukureru" }
+          ]
+        },
+        {
+          emoji: "🍜",
+          en: "Ramen", ja: "ラーメン", zh: "拉麵", pinyin: "lā miàn", romaji: "rāmen",
+          reasons: [
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" }
+          ]
+        },
+        {
+          emoji: "🥣",
+          en: "Soup", ja: "スープ", zh: "湯", pinyin: "tāng", romaji: "sūpu",
+          reasons: [
+            { en: "Warm", ja: "温かい", zh: "暖胃", pinyin: "nuǎn wèi", romaji: "atatakai" },
+            { en: "Healthy", ja: "体に良い", zh: "健康", pinyin: "jiàn kāng", romaji: "karada ni yoi" },
+            { en: "Delicious", ja: "美味しい", zh: "好喝", pinyin: "hǎo hē", romaji: "oishii" }
+          ]
+        },
+        {
+          emoji: "🥟",
+          en: "Dumplings", ja: "餃子", zh: "水餃", pinyin: "shuǐ jiǎo", romaji: "gyōza",
+          reasons: [
+            { en: "Juicy", ja: "ジューシー", zh: "多汁", pinyin: "duō zhī", romaji: "jūshī" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" }
+          ]
+        },
+        {
+          emoji: "🍛",
+          en: "Curry and rice", ja: "カレーライス", zh: "咖哩飯", pinyin: "gā lǐ fàn", romaji: "karē raisu",
+          reasons: [
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" }
+          ]
+        }
+      ]
+    },
+
+    // 🇯🇵 JAPAN 7
+    {
+      country: 'japan',
+      qNum: 14,
+      qText: {
+        en: "What's your favorite winter food?",
+        ja: "冬に一番好きな食べ物は何ですか？",
+        zh: "你冬天最喜歡吃什麼食物？",
+        pinyin: "nǐ dōng tiān zuì xǐ huān chī shén me shí wù?",
+        romaji: "Fuyu ni ichiban suki na tabemono wa nani desu ka?"
+      },
+      choices: [
+        {
+          emoji: "🍜",
+          en: "Ramen", ja: "ラーメン", zh: "拉麵", pinyin: "lā miàn", romaji: "rāmen",
+          reasons: [
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" }
+          ]
+        },
+        {
+          emoji: "🍢",
+          en: "Oden", ja: "おでん", zh: "關東煮", pinyin: "guān dōng zhǔ", romaji: "oden",
+          reasons: [
+            { en: "Warm", ja: "温かい", zh: "溫暖", pinyin: "wēn nuǎn", romaji: "atatakai" },
+            { en: "Healthy", ja: "体に良い", zh: "健康", pinyin: "jiàn kāng", romaji: "karada ni yoi" },
+            { en: "Delicious", ja: "美味しい", zh: "美味", pinyin: "měi wèi", romaji: "oishii" }
+          ]
+        },
+        {
+          emoji: "🍲",
+          en: "Hot pot", ja: "鍋", zh: "火鍋", pinyin: "huǒ guō", romaji: "nabe",
+          reasons: [
+            { en: "Warm", ja: "温かい", zh: "溫暖", pinyin: "wēn nuǎn", romaji: "atatakai" },
+            { en: "Delicious", ja: "美味しい", zh: "美味", pinyin: "měi wèi", romaji: "oishii" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "豐富飽足", pinyin: "fēng fù bǎo zú", romaji: "onaka ga fukureru" }
+          ]
+        },
+        {
+          emoji: "🍛",
+          en: "Curry and rice", ja: "カレーライス", zh: "咖哩飯", pinyin: "gā lǐ fàn", romaji: "karē raisu",
+          reasons: [
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" }
+          ]
+        },
+        {
+          emoji: "🥟",
+          en: "Nikuman", ja: "肉まん", zh: "肉包", pinyin: "ròu bāo", romaji: "nikuman",
+          reasons: [
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Soft", ja: "柔らかい", zh: "鬆軟", pinyin: "sōng ruǎn", romaji: "yarawakai" },
+            { en: "Delicious", ja: "美味しい", zh: "美味", pinyin: "měi wèi", romaji: "oishii" }
+          ]
+        }
+      ]
+    },
+
+    // 🇹🇼 TAIWAN 8
+    {
+      country: 'taiwan',
+      qNum: 15,
+      qText: {
+        en: "What's your favorite Taiwanese food?",
+        ja: "台湾料理で何が一番好きですか？",
+        zh: "你最喜歡什麼台灣美食？",
+        pinyin: "nǐ zuì xǐ huān shén me tái wān měi wèi?",
+        romaji: "Taiwan ryōri de nani ga ichiban suki desu ka?"
+      },
+      choices: [
+        {
+          emoji: "🍜",
+          en: "Beef noodle soup", ja: "牛肉麺", zh: "牛肉麵", pinyin: "niú ròu miàn", romaji: "gyūniku rāmen",
+          reasons: [
+            { en: "Delicious", ja: "美味しい", zh: "美味極了", pinyin: "měi wèi jí le", romaji: "oishii" },
+            { en: "Warm", ja: "温かい", zh: "溫熱濃郁", pinyin: "wēn rè nóng yù", romaji: "atatakai" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" }
+          ]
+        },
+        {
+          emoji: "🍚",
+          en: "Braised pork rice", ja: "ルーローハン", zh: "滷肉飯", pinyin: "lǔ ròu fàn", romaji: "rūrōhan",
+          reasons: [
+            { en: "Delicious", ja: "美味しい", zh: "咸香美味", pinyin: "xián xiāng měi wèi", romaji: "oishii" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" }
+          ]
+        },
+        {
+          emoji: "🥞",
+          en: "Scallion pancake", ja: "台湾風ねぎパンケーキ", zh: "蔥抓餅", pinyin: "cōng zhuā bǐng", romaji: "taiwan-fū negi pankēki",
+          reasons: [
+            { en: "Crispy", ja: "サクサクしている", zh: "酥脆", pinyin: "sū cuì", romaji: "sakusaku shiteiru" },
+            { en: "Chewy", ja: "モチモチしている", zh: "Q彈", pinyin: "Q dàn", romaji: "mochimochi shiteiru" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" }
+          ]
+        },
+        {
+          emoji: "🥩",
+          en: "Fried chicken cutlet", ja: "台湾風フライドチキンカツ", zh: "雞排", pinyin: "jī pái", romaji: "taiwan-fū furaido chikkin katsu",
+          reasons: [
+            { en: "Crispy", ja: "サクサクしている", zh: "超酥脆", pinyin: "chāo sū cuì", romaji: "sakusaku shiteiru" },
+            { en: "Juicy", ja: "ジューシー", zh: "多汁", pinyin: "duō zhī", romaji: "jūshī" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "大份量飽足", pinyin: "dà fèn liàng bǎo zú", romaji: "onaka ga fukureru" }
+          ]
+        },
+        {
+          emoji: "🧋",
+          en: "Bubble tea", ja: "タピオカミルクティー", zh: "珍珠奶茶", pinyin: "zhēn zhū nǎi chá", romaji: "tapioka miruku tī",
+          reasons: [
+            { en: "Chewy", ja: "モチモチしている", zh: "Q彈", pinyin: "Q dàn", romaji: "mochimochi shiteiru" },
+            { en: "Sweet", ja: "甘い", zh: "香甜", pinyin: "xiāng tián", romaji: "amai" },
+            { en: "Delicious", ja: "美味しい", zh: "好喝", pinyin: "hǎo hē", romaji: "oishii" }
+          ]
+        }
+      ]
+    },
+
+    // 🇯🇵 JAPAN 8
+    {
+      country: 'japan',
+      qNum: 16,
+      qText: {
+        en: "What's your favorite Japanese food?",
+        ja: "日本料理で何が一番好きですか？",
+        zh: "你最喜歡什麼日本美食？",
+        pinyin: "nǐ zuì xǐ huān shén me rì běn měi wèi?",
+        romaji: "Nihon ryōri de nani ga ichiban suki desu ka?"
+      },
+      choices: [
+        {
+          emoji: "🍣",
+          en: "Sushi", ja: "寿司", zh: "壽司", pinyin: "shòu sī", romaji: "sushi",
+          reasons: [
+            { en: "Fresh", ja: "新鮮", zh: "新鮮", pinyin: "xīn xiān", romaji: "shinsen" },
+            { en: "Delicious", ja: "美味しい", zh: "美味", pinyin: "měi wèi", romaji: "oishii" },
+            { en: "Healthy", ja: "体に良い", zh: "健康", pinyin: "jiàn kāng", romaji: "karada ni yoi" }
+          ]
+        },
+        {
+          emoji: "🍜",
+          en: "Ramen", ja: "ラーメン", zh: "拉麵", pinyin: "lā miàn", romaji: "rāmen",
+          reasons: [
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" }
+          ]
+        },
+        {
+          emoji: "🍛",
+          en: "Curry and rice", ja: "カレーライス", zh: "咖哩飯", pinyin: "gā lǐ fàn", romaji: "karē raisu",
+          reasons: [
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" },
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Filling", ja: "お腹がふくれる", zh: "很有飽足感", pinyin: "hěn yǒu bǎo zú gǎn", romaji: "onaka ga fukureru" }
+          ]
+        },
+        {
+          emoji: "🐙",
+          en: "Takoyaki", ja: "たこ焼き", zh: "章魚燒", pinyin: "zhāng yú shāo", romaji: "takoyaki",
+          reasons: [
+            { en: "Hot", ja: "熱い", zh: "燙口熱騰騰", pinyin: "tàng kǒu rè téng téng", romaji: "atsui" },
+            { en: "Soft", ja: "柔らかい", zh: "鬆軟", pinyin: "sōng ruǎn", romaji: "yarawakai" },
+            { en: "Delicious", ja: "美味しい", zh: "美味", pinyin: "měi wèi", romaji: "oishii" }
+          ]
+        },
+        {
+          emoji: "🍲",
+          en: "Udon", ja: "うどん", zh: "烏龍麵", pinyin: "wū lóng miàn", romaji: "udon",
+          reasons: [
+            { en: "Warm", ja: "温かい", zh: "溫熱", pinyin: "wēn rè", romaji: "atatakai" },
+            { en: "Soft", ja: "柔らかい", zh: "滑順", pinyin: "huá shùn", romaji: "yarawakai" },
+            { en: "Delicious", ja: "美味しい", zh: "好吃", pinyin: "hǎo chī", romaji: "oishii" }
+          ]
+        }
+      ]
+    }
+  ];
+
+  /* ==========================================================================
+     GLOBAL GAME STATE & TEACHER CONFIG
+     ========================================================================== */
+  let gameState = {
+    currentQIndex: 0,
+    taiwanScore: 0,
+    japanScore: 0,
+    selectedFood: null,
+    selectedReason: null,
+    stage: 'TURN' // Stages: TURN, CHOOSE_FOOD, WHY, SAY_FULL, REVEAL_GEMS
+  };
+
+  let teacherSettings = {
+    voiceEnabled: true,
+    sfxEnabled: true,
+    speechRate: 0.85
+  };
+
+  /* ==========================================================================
+     WEB AUDIO API SOUND EFFECTS ENGINE (AUTOMATIC)
+     ========================================================================== */
+  const AudioCtx = window.AudioContext || window.webkitAudioContext;
+  let audioCtx = null;
+
+  function initAudioCtx() {
+    if (!audioCtx) {
+      audioCtx = new AudioCtx();
+    }
+    if (audioCtx.state === 'suspended') {
+      audioCtx.resume();
+    }
+  }
+
+  function playSFX(type) {
+    if (!teacherSettings.sfxEnabled) return;
+    initAudioCtx();
+    if (!audioCtx) return;
+
+    const now = audioCtx.currentTime;
+
+    if (type === 'drum') {
+      // Cute drum roll / hit
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.setValueAtTime(150, now);
+      osc.frequency.exponentialRampToValueAtTime(40, now + 0.25);
+      gain.gain.setValueAtTime(0.4, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.25);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + 0.25);
+    } 
+    else if (type === 'bubble') {
+      // Soft bubble-pop sound
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(400, now);
+      osc.frequency.exponentialRampToValueAtTime(800, now + 0.08);
+      gain.gain.setValueAtTime(0.3, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.08);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + 0.08);
+    } 
+    else if (type === 'pop') {
+      // Tiny soft pop
+      const osc = audioCtx.createOscillator();
+      const gain = audioCtx.createGain();
+      osc.type = 'sine';
+      osc.frequency.setValueAtTime(600, now);
+      osc.frequency.exponentialRampToValueAtTime(300, now + 0.06);
+      gain.gain.setValueAtTime(0.2, now);
+      gain.gain.exponentialRampToValueAtTime(0.01, now + 0.06);
+      osc.connect(gain);
+      gain.connect(audioCtx.destination);
+      osc.start(now);
+      osc.stop(now + 0.06);
+    } 
+    else if (type === 'chime') {
+      // Celebratory chime
+      const notes = [523.25, 659.25, 783.99, 1046.50]; // C5, E5, G5, C6
+      notes.forEach((freq, i) => {
+        const osc = audioCtx.createOscillator();
+        const gain = audioCtx.createGain();
+        osc.type = 'sine';
+        osc.frequency.value = freq;
+        gain.gain.setValueAtTime(0.2, now + i * 0.08);
+        gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.08 + 0.3);
+        osc.connect(gain);
+        gain.connect(audioCtx.destination);
+        osc.start(now + i * 0.08);
+        osc.stop(now + i * 0.08 + 0.3);
+      });
+    }
+  }
+
+  /* ==========================================================================
+     WEB SPEECH API (ENGLISH ONLY - MANUAL ACTIVATION)
+     ========================================================================== */
+  function playEnglishSpeech(text) {
+    if (!teacherSettings.voiceEnabled) return;
+    if (!('speechSynthesis' in window)) return;
+
+    window.speechSynthesis.cancel(); // Stop active speech
+    const utterance = new SpeechSynthesisUtterance(text);
+    utterance.lang = 'en-US';
+    utterance.rate = teacherSettings.speechRate;
+    utterance.pitch = 1.0;
+    utterance.volume = 1.0;
+    window.speechSynthesis.speak(utterance);
+  }
+
+  /* ==========================================================================
+     GAME FLOW ENGINE & CONTROLLER
+     ========================================================================== */
+  function startGame() {
+    initAudioCtx();
+    gameState.currentQIndex = 0;
+    gameState.taiwanScore = 0;
+    gameState.japanScore = 0;
+    updateScoreDisplays();
+
+    showScreen('game-screen');
+    startQuestionSequence();
+  }
+
+  function startQuestionSequence() {
+    const qData = questionsData[gameState.currentQIndex];
+    gameState.selectedFood = null;
+    gameState.selectedReason = null;
+    gameState.stage = 'TURN';
+
+    // Update Progress Header
+    document.getElementById('q-progress-text').innerText = `QUESTION ${gameState.currentQIndex + 1} / 16`;
+
+    // 1. SHOW FULL-SCREEN COUNTRY TURN OVERLAY
+    showCountryTurnOverlay(qData.country);
+  }
+
+  function showCountryTurnOverlay(country) {
+    const overlay = document.getElementById('turn-overlay');
+    const flagDisplay = document.getElementById('turn-flag-display');
+    const countryDisplay = document.getElementById('turn-country-display');
+    const decorDisplay = document.getElementById('turn-food-decor');
+    const audioBtn = document.getElementById('turn-audio-btn');
+
+    overlay.className = 'active ' + (country === 'taiwan' ? 'taiwan-bg' : 'japan-bg');
+
+    if (country === 'taiwan') {
+      flagDisplay.innerText = '🇹🇼';
+      countryDisplay.innerText = "TAIWAN'S TURN!";
+      decorDisplay.innerText = '🍜 🧋 🥟 🍗 🥞 🍚';
+      audioBtn.onclick = () => playEnglishSpeech("Taiwan's turn!");
+    } else {
+      flagDisplay.innerText = '🇯🇵';
+      countryDisplay.innerText = "JAPAN'S TURN!";
+      decorDisplay.innerText = '🍣 🍜 🍙 🍡 🍛 🥟';
+      audioBtn.onclick = () => playEnglishSpeech("Japan's turn!");
+    }
+
+    // Play Automatic Drum SFX
+    playSFX('drum');
+
+    // Hold Overlay for ~1.8 seconds then enter question
+    setTimeout(() => {
+      overlay.className = '';
+      setupQuestionStage();
+    }, 1800);
+  }
+
+  function setupQuestionStage() {
+    gameState.stage = 'CHOOSE_FOOD';
+    const qData = questionsData[gameState.currentQIndex];
+
+    // Render Question in Five-Line Format
+    const qBlock = document.getElementById('question-lang-block');
+    qBlock.innerHTML = buildFiveLineHTML(qData.qText, true);
+
+    document.getElementById('stage-instruction-banner').innerText = "🗣️ ASK YOUR PARTNER!";
+
+    // Render 5 Stable Food Choice Cards
+    renderFoodGrid(qData.choices);
+
+    // Clear Interactive Stage Panel
+    document.getElementById('interactive-stage-panel').innerHTML = '';
+  }
+
+  function renderFoodGrid(choices) {
+    const grid = document.getElementById('food-grid');
+    grid.innerHTML = '';
+
+    choices.forEach((choice, idx) => {
+      const card = document.createElement('div');
+      card.className = 'food-card';
+      card.onclick = () => selectFoodChoice(idx);
+
+      card.innerHTML = `
+        <div class="food-emoji">${choice.emoji}</div>
+        ${buildFiveLineHTML(choice, true)}
+      `;
+
+      grid.appendChild(card);
+
+      // Staggered Entrance Animation
+      setTimeout(() => {
+        card.classList.add('popped');
+      }, idx * 80);
+    });
+  }
+
+  function selectFoodChoice(index) {
+    if (gameState.stage !== 'CHOOSE_FOOD') return;
+
+    playSFX('bubble');
+
+    const qData = questionsData[gameState.currentQIndex];
+    gameState.selectedFood = qData.choices[index];
+    gameState.stage = 'SAY_FOOD';
+
+    // Update Card Visuals (Grow selected, dim others)
+    const cards = document.querySelectorAll('.food-card');
+    cards.forEach((card, idx) => {
+      if (idx === index) {
+        card.classList.add('selected');
+      } else {
+        card.classList.add('dimmed');
+      }
+    });
+
+    // Display "SAY IT!" stage panel
+    showSayFoodStagePanel();
+  }
+
+  function showSayFoodStagePanel() {
+    const panel = document.getElementById('interactive-stage-panel');
+    const foodEn = gameState.selectedFood.en;
+
+    document.getElementById('stage-instruction-banner').innerText = "🗣️ SAY IT!";
+
+    panel.innerHTML = `
+      <div class="stage-panel" style="animation: popIn 0.3s forwards;">
+        <div class="spoken-target-box">
+          <span class="spoken-sentence-text">"I like ${foodEn}."</span>
+          <button class="audio-inline-btn" onclick="playEnglishSpeech('I like ${foodEn}.')">🔊</button>
+        </div>
+        <button class="finish-saying-btn" onclick="enterWhyStage()">NEXT: WHY? ➔</button>
+      </div>
+    `;
+  }
+
+  function enterWhyStage() {
+    gameState.stage = 'WHY';
+    playSFX('pop');
+
+    document.getElementById('stage-instruction-banner').innerText = "🤔 WHY?";
+
+    const panel = document.getElementById('interactive-stage-panel');
+    const reasons = gameState.selectedFood.reasons;
+
+    let reasonsHTML = reasons.map((r, idx) => `
+      <div class="why-card" onclick="selectWhyReason(${idx})">
+        ${buildFiveLineHTML(r, true)}
+      </div>
+    `).join('');
+
+    panel.innerHTML = `
+      <div class="stage-panel" style="animation: popIn 0.3s forwards;">
+        <div class="why-choices-grid">
+          ${reasonsHTML}
+        </div>
+      </div>
+    `;
+  }
+
+  function selectWhyReason(index) {
+    if (gameState.stage !== 'WHY') return;
+
+    playSFX('pop');
+
+    const reasons = gameState.selectedFood.reasons;
+    gameState.selectedReason = reasons[index];
+    gameState.stage = 'SAY_FULL';
+
+    document.getElementById('stage-instruction-banner').innerText = "🗣️ SAY THE FULL SENTENCE!";
+
+    // Highlight selected WHY card
+    const whyCards = document.querySelectorAll('.why-card');
+    whyCards.forEach((card, idx) => {
+      if (idx === index) card.classList.add('selected');
+    });
+
+    // Render Full Spoken Sentence Stage Panel
+    showSayFullSentenceStagePanel();
+  }
+
+  function showSayFullSentenceStagePanel() {
+    const panel = document.getElementById('interactive-stage-panel');
+    const fullText = `I like it because it's ${gameState.selectedReason.en.toLowerCase()}.`;
+
+    panel.innerHTML = `
+      <div class="stage-panel" style="animation: popIn 0.3s forwards; margin-top:10px;">
+        <div class="spoken-target-box">
+          <span class="spoken-sentence-text">"${fullText}"</span>
+          <button class="audio-inline-btn" onclick="playEnglishSpeech(\`${fullText}\`)">🔊</button>
+        </div>
+        <button class="finish-saying-btn" onclick="triggerPointsReveal()">I SAID IT! EARN GEMS ✨</button>
+      </div>
+    `;
+  }
+
+  /* ==========================================================================
+     CRITICAL POINT REVEAL LOGIC
+     Points generated ONLY AFTER full sentence is completed!
+     ========================================================================== */
+  function triggerPointsReveal() {
+    gameState.stage = 'REVEAL_GEMS';
+
+    // 1. Generate Random Culture Gems (1-4)
+    const earnedGems = Math.floor(Math.random() * 4) + 1;
+
+    // 2. Update Active Country Score
+    const qData = questionsData[gameState.currentQIndex];
+    if (qData.country === 'taiwan') {
+      gameState.taiwanScore += earnedGems;
+    } else {
+      gameState.japanScore += earnedGems;
+    }
+    updateScoreDisplays();
+
+    // 3. Play Celebratory SFX
+    playSFX('chime');
+
+    // 4. Render Reveal Card
+    const panel = document.getElementById('interactive-stage-panel');
+    panel.innerHTML = `
+      <div class="gems-reveal-card">
+        <div class="gems-amount">+${earnedGems} CULTURE GEMS! ✨</div>
+        <div style="font-weight:bold; color:#5D4037;">Great sharing!</div>
+        <button class="next-turn-btn" onclick="advanceToNextQuestion()">NEXT QUESTION ➔</button>
+      </div>
+    `;
+  }
+
+  function advanceToNextQuestion() {
+    gameState.currentQIndex++;
+
+    if (gameState.currentQIndex >= questionsData.length) {
+      // Complete 16 questions -> Show Final Screen
+      showFinalScreen();
+    } else {
+      startQuestionSequence();
+    }
+  }
+
+  function showFinalScreen() {
+    playSFX('chime');
+
+    document.getElementById('final-tw-score').innerText = gameState.taiwanScore;
+    document.getElementById('final-jp-score').innerText = gameState.japanScore;
+    document.getElementById('final-total-score').innerText = gameState.taiwanScore + gameState.japanScore;
+
+    showScreen('final-screen');
+  }
+
+  /* ==========================================================================
+     UTILITY & HELPER FUNCTIONS
+     ========================================================================== */
+  function buildFiveLineHTML(obj, includeAudioBtn = false) {
+    const audioMarkup = includeAudioBtn 
+      ? `<button class="audio-inline-btn" onclick="event.stopPropagation(); playEnglishSpeech(\`${escapeQuotes(obj.en)}\`)">🔊</button>`
+      : '';
+
+    return `
+      <div class="lang-block">
+        <div class="lang-en">${obj.en} ${audioMarkup}</div>
+        <div class="lang-ja">${obj.ja}</div>
+        <div class="lang-zh">${obj.zh}</div>
+        <div class="lang-pinyin">${obj.pinyin}</div>
+        <div class="lang-romaji">${obj.romaji}</div>
+      </div>
+    `;
+  }
+
+  function escapeQuotes(str) {
+    return str.replace(/'/g, "\\'").replace(/"/g, '\\"');
+  }
+
+  function updateScoreDisplays() {
+    document.getElementById('tw-score-display').innerText = gameState.taiwanScore;
+    document.getElementById('jp-score-display').innerText = gameState.japanScore;
+  }
+
+  function showScreen(screenId) {
+    document.querySelectorAll('.screen').forEach(s => s.classList.remove('active'));
+    document.getElementById(screenId).classList.add('active');
+  }
+
+  function resetGameToStart() {
+    showScreen('start-screen');
+  }
+
+  /* ==========================================================================
+     MODAL CONTROLLERS & TEACHER SETTINGS
+     ========================================================================== */
+  function openHelpModal() {
+    document.getElementById('help-modal').classList.add('active');
+  }
+
+  function closeHelpModal() {
+    document.getElementById('help-modal').classList.remove('active');
+  }
+
+  function openSettingsModal() {
+    document.getElementById('settings-modal').classList.add('active');
+  }
+
+  function closeSettingsModal() {
+    document.getElementById('settings-modal').classList.remove('active');
+  }
+
+  function updateSettings() {
+    teacherSettings.voiceEnabled = document.getElementById('setting-voice-toggle').checked;
+    teacherSettings.sfxEnabled = document.getElementById('setting-sfx-toggle').checked;
+    teacherSettings.speechRate = parseFloat(document.getElementById('setting-speech-speed').value);
+  }
+
+  function confirmResetScores() {
+    if (confirm("Reset current scores to 0?")) {
+      gameState.taiwanScore = 0;
+      gameState.japanScore = 0;
+      updateScoreDisplays();
+      closeSettingsModal();
+    }
+  }
+
+  function confirmRestartGame() {
+    if (confirm("Restart game from Question 1?")) {
+      closeSettingsModal();
+      startGame();
+    }
+  }
+</script>
+</body>
+</html>
